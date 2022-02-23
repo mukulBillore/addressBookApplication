@@ -23,13 +23,13 @@ public class AddressBookController {
 	AddressBookRepoInterface repo;
 
 	// hello msg printing 
-	@GetMapping("/hello")
+	@GetMapping("/hi")
 	public String sayHello() {
 		return "welocome to Address book ";
 	}
 
 	// hello msg with name
-	@PostMapping("/helloBy	Name")
+	@PostMapping("/helloByName")
 	public String mapbyName(@RequestParam String name) {
 		return name + " ! welcome to Address book system";
 	}
