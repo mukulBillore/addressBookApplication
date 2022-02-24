@@ -3,6 +3,8 @@ package com.bridgelabz.addressBookApplication.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bridgelabz.addressBookApplication.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApplication.model.AddressBookModel;
 import com.bridgelabz.addressBookApplication.repository.AddressBookRepoInterface;
 
@@ -61,11 +64,11 @@ public class AddressBookController {
 
 	// update the data in the repo
 	@PutMapping("/updateData/{id}")
-	public AddressBookModel updateBookById(@PathVariable int id, @RequestBody AddressBookModel obj) {
+	public ResponseEntity<AddressBookModel> updateBookById(@PathVariable int id, @RequestBody AddressBookDTO obj) {
 		AddressBookModel addressBookModel  = new AddressBookModel(obj, id);
 		repo.save(addressBookModel);
 		
-		return addressBookModel;
+		return new ResponseEntity<AddressBookModel>(addressBookModel,HttpStatus.OK);
 	}
 
 	

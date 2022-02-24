@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.bridgelabz.addressBookApplication.dto.AddressBookDTO;
+
 
 @Entity
 @Table(name="addressBookDetails")
@@ -56,7 +58,24 @@ public class AddressBookModel {
 	
 
 	
+	// constructor : parameter as DTO object and id 
+	public AddressBookModel(AddressBookDTO objAddressBook, int id) {
 	
+		this.id = id;
+		this.firstName = objAddressBook.getFirstName();
+		this.lastName = objAddressBook.getLastName();
+		this.email = objAddressBook.getEmail();
+		this.phoneNumber = objAddressBook.getPhoneNumber();
+		this.city = objAddressBook.getCity();
+		this.state = objAddressBook.getState();
+		this.zip = objAddressBook.getZip();
+
+	}
+
+
+	
+
+
 	// Getters and Setters
 	public Integer getId() {
 		return id;
