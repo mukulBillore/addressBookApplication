@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.bridgelabz.addressBookApplication.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApplication.model.AddressBookModel;
 import com.bridgelabz.addressBookApplication.repository.AddressBookRepoInterface;
+import com.bridgelabz.addressBookApplication.service.AddressBookService;
 
 
 @RestController
@@ -24,23 +25,25 @@ public class AddressBookController {
 
 	@Autowired
 	AddressBookRepoInterface repo;
-
+	@Autowired
+	AddressBookService service;
+	
 	// hello msg printing 
 	@GetMapping("/hi")
 	public String sayHello() {
-		return "welocome to Address book ";
+		return service.message();
 	}
 
 	// hello msg with name
 	@PostMapping("/helloByName")
 	public String mapbyName(@RequestParam String name) {
-		return name + " ! welcome to Address book system";
+		return service.messageByName(name);
 	}
 
 	// Saving the data in the local modal object. 
 	@PostMapping("/saveData")
 	public String setBook(@RequestBody AddressBookModel addressBookobj) {
-		AddressBookModel addressBookObj = new AddressBookModel(addressBookobj);
+		AddressBookModel addressBookObj = service.save(addressBookobj);
 		repo.save(addressBookObj);
 		return "saved the person details  With name :" + addressBookObj.getFirstName() + " "
 				+ addressBookObj.getLastName();
