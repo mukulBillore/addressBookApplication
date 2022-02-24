@@ -16,15 +16,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.bridgelabz.addressBookApplication.dto.AddressBookDTO;
 import com.bridgelabz.addressBookApplication.model.AddressBookModel;
-import com.bridgelabz.addressBookApplication.repository.AddressBookRepoInterface;
 import com.bridgelabz.addressBookApplication.service.AddressBookService;
 
 
 @RestController
 public class AddressBookController {
 
-	@Autowired
-	AddressBookRepoInterface repo;
 	@Autowired
 	AddressBookService service;
 	
@@ -44,7 +41,6 @@ public class AddressBookController {
 	@PostMapping("/saveData")
 	public String setBook(@RequestBody AddressBookModel addressBookobj) {
 		AddressBookModel addressBookObj = service.save(addressBookobj);
-		repo.save(addressBookObj);
 		return "saved the person details  With name :" + addressBookObj.getFirstName() + " "
 				+ addressBookObj.getLastName();
 	}
@@ -54,23 +50,22 @@ public class AddressBookController {
 	// find all by id
 	@GetMapping("/findAll")
 	public List<AddressBookModel> findAll() {
-		List<AddressBookModel> addressBooklist = repo.findAll();
+		List<AddressBookModel> addressBooklist = service.getAll();
+				
 		return addressBooklist;
 	}
 
 	// find by id
 	@GetMapping("/findById/{id}")
 	public AddressBookModel setBook(@PathVariable int id) {
-		AddressBookModel addressBookModel = repo.findById(id).get();
+		AddressBookModel addressBookModel = service.getByid(id); 
 		return addressBookModel;
 	}
 
 	// update the data in the repo
 	@PutMapping("/updateData/{id}")
-	public ResponseEntity<AddressBookModel> updateBookById(@PathVariable int id, @RequestBody AddressBookDTO obj) {
-		AddressBookModel addressBookModel  = new AddressBookModel(obj, id);
-		repo.save(addressBookModel);
-		
+	public ResponseEntity<AddressBookModel> updateBookById(@PathVariable int id, @RequestBody AddressBookDTO dtoObj) {
+		AddressBookModel addressBookModel  = service.updateByid(dtoObj, id);
 		return new ResponseEntity<AddressBookModel>(addressBookModel,HttpStatus.OK);
 	}
 
@@ -79,8 +74,8 @@ public class AddressBookController {
 	// delete by id
 	@DeleteMapping("/delete/{id}")
 	public String deleteAddressBookBYId(@PathVariable int id) {
-	    repo.deleteById(id);
-		return "person is sucussfully deleted from  address book";
+	   String msg = service.deleteById(id);
+		return msg;
 	}
 
 }
